@@ -12,14 +12,11 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         required: [true, 'Phone Number is required'],
-        minlength: [10, 'Phone Number must be 10 digits'],
-        maxlength: [10, 'Phone Number must be 10 digits'],
     },
     email: {
         type: String,
         required: [true, 'Email is required'],
         unique: true,
-        match: [/\S+@\S+\.\S+/, 'Email is invalid'],
     },
     address: {
         type: String,
