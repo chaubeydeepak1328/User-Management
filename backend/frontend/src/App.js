@@ -52,7 +52,7 @@ const App = () => {
       setLoading(false);
       toast({
         title: "Registration Failed",
-        description: error.response?.data?.message || 'An error occurred',
+        description: error.response?.data || 'An error occurred',
         status: "error",
         duration: 5000,
         isClosable: true,

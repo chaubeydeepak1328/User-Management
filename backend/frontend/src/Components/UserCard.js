@@ -69,7 +69,7 @@ const UserCard = ({
     } catch (error) {
       toast({
         title: "Failed to update user",
-        description: error.response?.data?.message || "An error occurred",
+        description: error.response?.data || "An error occurred",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -97,7 +97,7 @@ const UserCard = ({
     } catch (error) {
       toast({
         title: "Failed to delete user",
-        description: error.response?.data?.message || "An error occurred",
+        description: error.response?.data || "An error occurred",
         status: "error",
         duration: 5000,
         isClosable: true,
