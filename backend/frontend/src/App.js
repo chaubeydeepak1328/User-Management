@@ -1,7 +1,21 @@
-import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
+import axios from 'axios';
 import UserCard from './Components/UserCard';
 import { UserState } from './Context/UserProvider';
 
@@ -17,16 +31,14 @@ const App = () => {
     lastName: "",
     phoneNumber: "",
     email: "",
-    address: ""
+    address: "",
   });
 
-  // Handle input change for registration form
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Register the new user
   const registerUser = async () => {
     try {
       setLoading(true);
@@ -38,13 +50,13 @@ const App = () => {
         isClosable: true,
         position: "bottom",
       });
-      setUsers((prevData) => [...prevData, userData]);
+      setUsers((prevData) => [...prevData, data]);
       setUserData({
         firstName: "",
         lastName: "",
         phoneNumber: "",
         email: "",
-        address: ""
+        address: "",
       });
       setLoading(false);
       onClose();
@@ -52,7 +64,7 @@ const App = () => {
       setLoading(false);
       toast({
         title: "Registration Failed",
-        description: error.response?.data || 'An error occurred',
+        description: error.response?.data || "An error occurred",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -61,29 +73,25 @@ const App = () => {
     }
   };
 
-  // Fetch users from the backend
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('/api/user');
+        const response = await axios.get("/api/user");
         setUsers(response.data);
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error("Error fetching users:", error);
       }
     };
     fetchUsers();
-  }, []);
+  }, [setUsers]);
 
-
-  // fiter the user based on the search input
   const filterUsers = users.filter((user) => {
     const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
     return fullName.includes(search.toLowerCase());
-  })
+  });
 
   return (
     <>
-      {/* User Table that shows data */}
       <div className="app-container">
         <div className="header">
           <h2>User Management</h2>
@@ -117,27 +125,22 @@ const App = () => {
             </tr>
           </thead>
           <tbody>
-            {/* Dynamically load user data */}
-            {filterUsers.map((user, index) => {
-              const { firstName, lastName, phoneNumber, email, address, _id } = user;
-              return (
-                <UserCard
-                  key={index}
-                  sno={index + 1}
-                  firstName={firstName}
-                  lastName={lastName}
-                  phoneNumber={phoneNumber}
-                  email={email}
-                  address={address}
-                  userId={_id}
-                />
-              );
-            })}
+            {filterUsers.map((user, index) => (
+              <UserCard
+                key={index}
+                sno={index + 1}
+                firstName={user.firstName}
+                lastName={user.lastName}
+                phoneNumber={user.phoneNumber}
+                email={user.email}
+                address={user.address}
+                userId={user._id}
+              />
+            ))}
           </tbody>
         </table>
       </div>
 
-      {/* Register new User Modal */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

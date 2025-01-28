@@ -49,7 +49,7 @@ const UserCard = ({
   // Update user data
   const updateUser = async () => {
     try {
-      await axios.put(`/api/user/${userId}`, editData);
+      const response = await axios.put(`/api/user/${userId}`, editData);
       toast({
         title: "User updated successfully",
         status: "success",
@@ -64,7 +64,7 @@ const UserCard = ({
       const deletedUser = users.filter((user) => user._id !== userId);
       // add the users into the array
       setUsers(() => {
-        return [...deletedUser, editData];
+        return [...deletedUser, response.data.user];
       });
     } catch (error) {
       toast({

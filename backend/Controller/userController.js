@@ -9,7 +9,7 @@ const registerUser = async (req, res) => {
     if (!User_match) {
       const newUser = new User(req.body);
       await newUser.save();
-      res.status(201).json("User Registered Successfully");
+      res.status(201).json(newUser);
     } else {
       res.status(400).json("Email already exists");
     }
@@ -33,19 +33,22 @@ const getAlluser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    // Update user by ID with the request body and return the updated document
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true, // Return the updated document
+      runValidators: true, // Ensure validation rules are applied
     });
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    res
-      .status(200)
-      .json({ message: `${user.firstName} data updated successfully`, user });
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.status(200).json({
+      message: `${updatedUser.firstName}'s data updated successfully`,
+      user: updatedUser,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ error: "An error occurred while updating the user" });
   }
 };
+
 
 // Delete a user by ID
 
